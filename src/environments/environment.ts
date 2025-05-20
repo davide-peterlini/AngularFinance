@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  marketauxApiKey: ''
+  marketauxApiKey: 'Sa3tjTQLRCd3hqJM9rjcAQk0XCS4a0m6nKLTqsFW'
 };
