@@ -16,8 +16,9 @@ import { RouterModule } from '@angular/router';
           Stay updated with the latest financial news and stock insights
         </p>
         <nav class="flex gap-6">
-          <a routerLink="/" routerLinkActive="font-bold underline" class="text-white hover:text-blue-200 transition">Home</a>
+          <a routerLink="/" routerLinkActive="font-bold" class="text-white hover:text-blue-200 transition">Home</a>
           <a routerLink="/stocks" routerLinkActive="font-bold underline" class="text-white hover:text-blue-200 transition">Stocks</a>
+          <a routerLink="/crypto" routerLinkActive="font-bold underline" class="text-white hover:text-blue-200 transition">Crypto</a>
         </nav>
       </div>
     </header>

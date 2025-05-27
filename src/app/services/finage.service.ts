@@ -7,13 +7,19 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class FinageService {
-  private apiKey = environment.finageApiKey; // Sostituisci con la tua API key
+  private apiKey = environment.finageApiKey;
 
   constructor(private http: HttpClient) {}
 
-  // Ottieni la quotazione di una stock (es: AAPL)
+  // Get the quote for a stock (e.g., AAPL)
   getStockQuote(symbol: string): Observable<any> {
     const url = `https://api.finage.co.uk/last/stock/${symbol}?apikey=${this.apiKey}`;
+    return this.http.get<any>(url);
+  }
+
+  // Get the quote for a cryptocurrency (e.g., BTCUSD)
+  getCryptoQuote(symbol: string): Observable<any> {
+    const url = `https://api.finage.co.uk/last/crypto/${symbol}?apikey=${this.apiKey}`;
     return this.http.get<any>(url);
   }
 }
