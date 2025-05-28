@@ -4,6 +4,7 @@ import { FinageService } from '../../services/finage.service';
 import { Subscription, interval } from 'rxjs';
 import { AssetListComponent } from '../shared/asset-list.component';
 
+// Interface for stock data
 interface StockData {
   symbol: string;
   price: number | null;
@@ -22,6 +23,7 @@ interface StockData {
   `
 })
 export class StocksComponent implements OnInit, OnDestroy {
+  // List of stock symbols to display
   stockSymbols = [
     'AAPL',  // Apple
     'MSFT',  // Microsoft
@@ -45,15 +47,18 @@ export class StocksComponent implements OnInit, OnDestroy {
   constructor(private finage: FinageService) {}
 
   ngOnInit() {
+    // Initialize stocks array with loading state
     this.stocks = this.stockSymbols.map(symbol => ({
       symbol,
       price: null,
       loading: true
     }));
     this.fetchAll();
+    // Refresh data every 100 seconds
     this.intervalSub = interval(100000).subscribe(() => this.fetchAll());
   }
 
+  // Fetch latest quotes for all stocks
   fetchAll() {
     this.stocks.forEach(stock => {
       stock.loading = true;
@@ -71,6 +76,7 @@ export class StocksComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // Clean up the interval subscription
     this.intervalSub?.unsubscribe();
   }
 }

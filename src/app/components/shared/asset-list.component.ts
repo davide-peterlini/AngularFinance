@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// Interface for asset data (stock or crypto)
 interface AssetData {
   symbol: string;
   price: number | null;
@@ -33,6 +34,8 @@ interface AssetData {
   `
 })
 export class AssetListComponent {
+  // List of assets to render (stocks or cryptos)
   @Input() assets: AssetData[] = [];
+  // Type of asset for styling ('stock' or 'crypto')
   @Input() type: 'stock' | 'crypto' = 'stock';
 }

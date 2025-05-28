@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MarketauxNewsService } from '../../services/marketaux-news.service';
 
+// Configuration for each news block section
 interface NewsBlockConfig {
   title: string;
   color: string;
@@ -15,14 +16,16 @@ interface NewsBlockConfig {
   imports: [CommonModule],
   template: `
     <div class="pt-12">
+      <!-- Button to open favorites modal -->
       <button
         (click)="showFavorites = true"
-        class="fixed top-6 right-6 z-50 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full p-4 shadow-lg"
+        class="fixed top-6 right-6 z-50 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg"
         title="Show favorite news"
       >
         &#9733;
       </button>
 
+      <!-- Render each news block (latest, symbol, positive, negative) -->
       <ng-container *ngFor="let block of newsBlocks">
         <h2 class="text-3xl font-black mb-10 mt-16 text-center"
             [ngClass]="block.color + ' tracking-tight drop-shadow'">
@@ -35,12 +38,14 @@ interface NewsBlockConfig {
               <img *ngIf="article.image_url"
                    [src]="article.image_url"
                    alt="Article cover"
-                   class="h-48 w-full object-cover">
+                   class="h-48 w-full object-cover"
+                   (error)="onImgError($event)">
               <div class="p-5 flex flex-col flex-1">
                 <h3 class="text-lg font-bold mb-2 text-gray-900 line-clamp-2">{{ article.title }}</h3>
                 <p class="text-gray-600 text-base mb-4 line-clamp-3">{{ article.description }}</p>
                 <span class="text-xs text-gray-400 mb-2">{{ article.published_at | date:'medium' }}</span>
                 <div class="flex items-center mb-2">
+                  <!-- Favorite/unfavorite buttons -->
                   <button
                     *ngIf="!isFavorite(article)"
                     (click)="addToFavorites(article)"
@@ -69,6 +74,7 @@ interface NewsBlockConfig {
               </div>
             </div>
           </ng-container>
+          <!-- Skeleton loader while loading -->
           <ng-template #skeleton>
             <div *ngFor="let n of skeletonArray" class="bg-gray-100 animate-pulse rounded-2xl shadow-lg w-80 flex flex-col overflow-hidden border border-gray-100">
               <div class="h-48 w-full bg-gray-200"></div>
@@ -84,6 +90,7 @@ interface NewsBlockConfig {
         </div>
       </ng-container>
 
+      <!-- Favorites modal -->
       <div
         *ngIf="showFavorites"
         class="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
@@ -122,6 +129,7 @@ export class FinanceNewsComponent implements OnInit {
   positiveArticles: any[] = [];
   negativeArticles: any[] = [];
 
+  // Loading state for each news block
   loading = {
     articles: true,
     symbolArticles: true,
@@ -131,6 +139,7 @@ export class FinanceNewsComponent implements OnInit {
 
   skeletonArray = Array(3);
 
+  // Configuration for each news block
   newsBlocks: NewsBlockConfig[] = [
     {
       title: 'Latest Finance News',
@@ -159,13 +168,12 @@ export class FinanceNewsComponent implements OnInit {
   ];
 
   favorites: any[] = [];
-
   showFavorites = false;
 
   constructor(private newsService: MarketauxNewsService) {}
 
+  // Returns the correct articles array based on the key
   getArticles(key: keyof FinanceNewsComponent): any[] {
-    // Only allow access to the four arrays
     switch (key) {
       case 'articles':
         return this.articles;
@@ -182,6 +190,7 @@ export class FinanceNewsComponent implements OnInit {
 
   ngOnInit() {
     this.loadFavorites();
+    // Fetch news for each block
     this.newsService.getFinanceNews().subscribe(data => {
       this.articles = data.data;
       this.loading.articles = false;
@@ -200,6 +209,7 @@ export class FinanceNewsComponent implements OnInit {
     });
   }
 
+  // Add an article to favorites if not already present
   addToFavorites(article: any) {
     if (!this.favorites.find(a => a.url === article.url)) {
       this.favorites.push(article);
@@ -207,21 +217,30 @@ export class FinanceNewsComponent implements OnInit {
     }
   }
 
+  // Remove an article from favorites
   removeFromFavorites(article: any) {
     this.favorites = this.favorites.filter(a => a.url !== article.url);
     this.saveFavorites();
   }
 
+  // Check if an article is in favorites
   isFavorite(article: any): boolean {
     return this.favorites.some(a => a.url === article.url);
   }
 
+  // Persist favorites to localStorage
   saveFavorites() {
     localStorage.setItem('favoriteNews', JSON.stringify(this.favorites));
   }
 
+  // Load favorites from localStorage
   loadFavorites() {
     const fav = localStorage.getItem('favoriteNews');
     this.favorites = fav ? JSON.parse(fav) : [];
+  }
+
+  // Set a default image if the article cover fails to load
+  onImgError(event: Event) {
+    (event.target as HTMLImageElement).src = 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg';
   }
 }

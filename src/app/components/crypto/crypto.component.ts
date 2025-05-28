@@ -4,6 +4,7 @@ import { FinageService } from '../../services/finage.service';
 import { Subscription, interval } from 'rxjs';
 import { AssetListComponent } from '../shared/asset-list.component';
 
+// Interface for crypto data
 interface CryptoData {
   symbol: string;
   price: number | null;
@@ -22,6 +23,7 @@ interface CryptoData {
   `
 })
 export class CryptoComponent implements OnInit, OnDestroy {
+  // List of crypto symbols to display
   cryptoSymbols = [
     'BTCUSD', // Bitcoin
     'ETHUSD', // Ethereum
@@ -40,15 +42,18 @@ export class CryptoComponent implements OnInit, OnDestroy {
   constructor(private finage: FinageService) {}
 
   ngOnInit() {
+    // Initialize cryptos array with loading state
     this.cryptos = this.cryptoSymbols.map(symbol => ({
       symbol,
       price: null,
       loading: true
     }));
     this.fetchAll();
+    // Refresh data every 100 seconds
     this.intervalSub = interval(100000).subscribe(() => this.fetchAll());
   }
 
+  // Fetch latest quotes for all cryptos
   fetchAll() {
     this.cryptos.forEach(crypto => {
       crypto.loading = true;
@@ -66,6 +71,7 @@ export class CryptoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // Clean up the interval subscription
     this.intervalSub?.unsubscribe();
   }
 }
