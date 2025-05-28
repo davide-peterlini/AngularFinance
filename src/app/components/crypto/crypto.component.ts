@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FinageService } from '../services/finage.service';
+import { FinageService } from '../../services/finage.service';
 import { Subscription, interval } from 'rxjs';
 import { AssetListComponent } from '../shared/asset-list.component';
 

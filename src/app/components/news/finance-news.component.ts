@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MarketauxNewsService } from '../services/marketaux-news.service';
+import { MarketauxNewsService } from '../../services/marketaux-news.service';
 
 interface NewsBlockConfig {
   title: string;

@@ -2,9 +2,9 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, Routes } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
-import { FinanceNewsComponent } from './app/news/finance-news.component';
-import { StocksComponent } from './app/stocks/stocks.component';
-import { CryptoComponent } from './app/crypto/crypto.component';
+import { FinanceNewsComponent } from './app/components/news/finance-news.component';
+import { StocksComponent } from './app/components/stocks/stocks.component';
+import { CryptoComponent } from './app/components/crypto/crypto.component';
 
 const routes: Routes = [
   { path: '', component: FinanceNewsComponent },
